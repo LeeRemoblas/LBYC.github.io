@@ -1,4 +1,4 @@
-document.querySelectorAll('.carousel').forEach((carousel) => {
+/* document.querySelectorAll('.carousel').forEach((carousel) => {
     const track = carousel.querySelector('.carousel-track');
     const images = Array.from(track.children);
     const prevButton = carousel.querySelector('.carousel-button.prev');
@@ -26,7 +26,46 @@ document.querySelectorAll('.carousel').forEach((carousel) => {
             track.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
         }
     });
+}); */
+
+document.querySelectorAll('.carousel').forEach((carousel) => {
+    const track = carousel.querySelector('.carousel-track');
+    const images = Array.from(track.children);
+    const prevButton = carousel.querySelector('.carousel-button.prev');
+    const nextButton = carousel.querySelector('.carousel-button.next');
+    let currentIndex = 0;
+
+    // Function to update the carousel
+    const updateCarousel = () => {
+        const imageWidth = carousel.getBoundingClientRect().width; // Get accurate carousel width
+        track.style.transform = `translateX(-${currentIndex * imageWidth}px)`;
+
+        images.forEach((img) => {
+            img.style.width = `${imageWidth}px`; // Ensure each image matches the carousel width
+        });
+    };
+
+    // Handle clicking the previous button
+    prevButton.addEventListener('click', () => {
+        if (currentIndex > 0) {
+            currentIndex--;
+            updateCarousel();
+        }
+    });
+
+    // Handle clicking the next button
+    nextButton.addEventListener('click', () => {
+        if (currentIndex < images.length - 1) {
+            currentIndex++;
+            updateCarousel();
+        }
+    });
+
+    // Update the carousel on load and resize
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel();
 });
+
 
 function scrollToTop() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
